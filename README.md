@@ -1,6 +1,6 @@
 ocr-tess4j-rest
 ============
-ocr-tess4j-rest - Java Wrapper for Tesseract OCR API with Rest API built over Tess4j (http://tess4j.sourceforge.net).
+ocr-tess4j-rest - Java Wrapper for Tesseract OCR with Rest API built over Tess4j (http://tess4j.sourceforge.net).
 
 Tess4J is a JNA wrapper for Tesseract OCR API it provides character recognition support for common image formats, 
 and multi-page images. The library has been developed and tested on Windows and Linux.
