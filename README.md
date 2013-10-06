@@ -7,11 +7,11 @@ and multi-page images. The library has been developed and tested on Windows and 
                 
 ### Installing dependencies
 
-Installing Tesseract
-https://code.google.com/p/tesseract-ocr/
+Installing Tesseract <br/>
+https://code.google.com/p/tesseract-ocr/ <br/>
 https://code.google.com/p/tesseract-ocr/wiki/ReadMe
 
-Install ghostscript (for PDF to Text)
+Install ghostscript (for PDF to Text) <br/>
 http://www.ghostscript.com/download/gsdnld.html
 
 <hr/>
