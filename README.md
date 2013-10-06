@@ -23,7 +23,7 @@ ocr-tess4j-rest uses:
 * Spring Data for connecting with mongo db.
 * Image + Text (from OCR) is stored in mongo db (image table)
 * Rest Assured is used for testing rest (Tess4jV1). Just remove @Ignore on the Tess4jV1SmokeTest and run the rest test.
-* Uses mongo db to store image - can we easily removed/changed from Tess4jV1 class if not required.
+* Uses mongo db to store image.
 * Logback for logging.
 * Graddle for build/eclipse clean.
 * Maven for build/eclipse clean (right now builds successfully but for some reason it's not starting embedded tomcat) *BUG*
