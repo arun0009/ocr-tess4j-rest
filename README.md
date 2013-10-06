@@ -26,6 +26,6 @@ ocr-tess4j-rest uses:
 * Uses mongo db to store image - can we easily removed/changed from Tess4jV1 class if not required.
 * Logback for logging.
 * Graddle for build/eclipse clean.
-* Maven for build/eclipse clean (right now this is builds but for some reason it's not starting embedded tomcat) *BUG*
+* Maven for build/eclipse clean (right now builds successfully but for some reason it's not starting embedded tomcat) *BUG*
 	
 
