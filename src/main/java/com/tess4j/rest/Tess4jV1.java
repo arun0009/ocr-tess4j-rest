@@ -1,5 +1,5 @@
 /**
- * Copyright @ 2010 Arun Gopalpuri
+ * Copyright @ 2013 Arun Gopalpuri
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.tess4j.rest;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.ws.rs.core.MediaType;
@@ -36,6 +35,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,9 +60,8 @@ public class Tess4jV1 {
 		return new Status("OK");
 	}
 
-	@RequestMapping(value = "ocr/v1/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
-	public Status doOcrFile(@RequestBody
-	final Image image) throws Exception {
+	@RequestMapping(value = "ocr/v0.9/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public Status doOcrFile(@RequestBody final Image image) throws Exception {
 		File tmpFile = File.createTempFile("ocr_image", image.getExtension());
 		try {
 			FileUtils.writeByteArrayToFile(tmpFile, Base64.decode(image.getImage()));
@@ -78,9 +79,8 @@ public class Tess4jV1 {
 		return new Status("success");
 	}
 
-	@RequestMapping(value = "ocr/v2/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
-	public Status doOcr(@RequestBody
-	final Image image) throws IOException, TesseractException {
+	@RequestMapping(value = "ocr/v1/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
+	public Status doOcr(@RequestBody Image image) throws TesseractException {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decode(image.getImage()));
 			Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
@@ -90,13 +90,31 @@ public class Tess4jV1 {
 			MongoOperations mongoOperations = (MongoOperations) context.getBean("mongoTemplate");
 			mongoOperations.save(image);
 			((AbstractApplicationContext) context).close();
-			LOGGER.info("OCR Result = " + imageText);
+			LOGGER.debug("OCR Result = " + imageText);
 		}
 		catch (Exception e) {
 			LOGGER.error("TessearctException while converting/uploading image: ", e);
 			throw new TesseractException();
 		}
 		return new Status("success");
+	}
+
+	@RequestMapping(value = "ocr/v1/image/{user}/{searchText}", method = RequestMethod.GET)
+	public Image getUserImage(@PathVariable String user, @PathVariable String searchText) throws Exception {
+		Image userImage = null;
+		try {
+			ApplicationContext context = new AnnotationConfigApplicationContext(MongoConfiguration.class);
+			Query query = new Query();
+			query.addCriteria(Criteria.where("userId").is(user).and("text").regex(searchText, "i"));
+			MongoOperations mongoOperations = (MongoOperations) context.getBean("mongoTemplate");
+			userImage = mongoOperations.findOne(query, Image.class);
+			((AbstractApplicationContext) context).close();
+		}
+		catch (Exception e) {
+			LOGGER.error("Exception occured finding image for user: {} with searchText: {} ", user, searchText, e);
+			throw new Exception();
+		}
+		return userImage;
 	}
 
 	public static void main(String[] args) {

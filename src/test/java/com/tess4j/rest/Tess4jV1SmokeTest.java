@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.sourceforge.tess4j;
+package com.tess4j.rest;
 
 import static com.jayway.restassured.RestAssured.given;
 
@@ -53,7 +53,19 @@ public class Tess4jV1SmokeTest {
 		image.setUserId("arun0009");
 		image.setImage(Base64.encodeBase64String(IOUtils.toString(inputStream).getBytes()));
 		String response = given().contentType("application/json").headers(headers).when().body(image).expect()
-				.statusCode(200).post("http://localhost:8080/ocr/v2/upload").asString();
+				.statusCode(200).post("http://localhost:8080/ocr/v1/upload").asString();
+		System.out.println(response);
+	}
+
+	@Test
+	public void testGetUserImage() throws IOException {
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Accept", MediaType.APPLICATION_JSON);
+		headers.put("Content-Type", MediaType.APPLICATION_JSON);
+
+		String response = given().contentType("application/json").headers(headers).when()
+				.pathParam("user", "arun0009").pathParam("searchText", "brown").get("http://localhost:8080/ocr/v1/image/{user}/{searchText}")
+				.asString();
 		System.out.println(response);
 	}
 
