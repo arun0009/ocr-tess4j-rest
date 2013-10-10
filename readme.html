@@ -90,7 +90,7 @@ public class TesseractExample {
         try {
             String result = instance.doOCR(imageFile);
             System.out.println(result);
-        } catch (TesseractException e) {
+        } catch (TesseractException e) { 
             System.err.println(e.getMessage());
         }
     }
