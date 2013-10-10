@@ -11,7 +11,7 @@ Installing Tesseract <br/>
 https://code.google.com/p/tesseract-ocr/ <br/>
 https://code.google.com/p/tesseract-ocr/wiki/ReadMe
 
-Install ghostscript (for PDF to Text) <br/>
+Install ghostscript (for PDF to Text) * If you are going to do PDF to text as well*<br/>
 http://www.ghostscript.com/download/gsdnld.html
 
 <hr/>
