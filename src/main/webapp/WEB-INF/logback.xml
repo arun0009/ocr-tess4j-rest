@@ -7,7 +7,7 @@
 		</layout>
 	</appender>
  
-     <!--Daily rolling file appender -->
+     <!--Daily rolling file appender-->
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<File>/development/logs/tess4j.log</File>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
