@@ -48,7 +48,7 @@
 			<version>0.5.0</version>
 		</dependency>
 
-		<!-- JSR 311 -->
+		<!-- JSR-311 -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
 			<artifactId>jsr311-api</artifactId>
