@@ -51,6 +51,7 @@ import com.tess4j.mongo.MongoConfiguration;
 @RestController
 @EnableAutoConfiguration
 @ComponentScan("com.tess4j.*")
+
 public class Tess4jV1 {
 
 	private Logger LOGGER = LoggerFactory.getLogger(Tess4jV1.class);
