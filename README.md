@@ -17,7 +17,7 @@ http://www.ghostscript.com/download/gsdnld.html
 On Mac the easiest way is to use homebrew:
 -----------------------------------------
 
-brew install tesseract
+brew install tesseract<br/>
 brew install gs
 
 <hr/>
