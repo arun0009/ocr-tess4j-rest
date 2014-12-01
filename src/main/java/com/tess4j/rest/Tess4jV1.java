@@ -16,109 +16,93 @@
 
 package com.tess4j.rest;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
-import javax.imageio.ImageIO;
-import javax.ws.rs.core.MediaType;
-
+import com.tess4j.rest.model.Image;
+import com.tess4j.rest.model.Status;
+import com.tess4j.rest.mongo.ImageRepository;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
-
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.support.AbstractApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
-import com.lowagie.text.pdf.codec.Base64;
-import com.tess4j.model.Image;
-import com.tess4j.model.Status;
-import com.tess4j.mongo.MongoConfiguration;
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-@RestController
 @EnableAutoConfiguration
+@Configuration
+@RestController
 @ComponentScan("com.tess4j.*")
-
 public class Tess4jV1 {
 
-	private Logger LOGGER = LoggerFactory.getLogger(Tess4jV1.class);
+    private Logger LOGGER = LoggerFactory.getLogger(Tess4jV1.class);
 
-	@RequestMapping(value = "ocr/ping", method = RequestMethod.GET)
-	public Status ping() throws Exception {
-		return new Status("OK");
-	}
+    @Autowired
+    private ImageRepository repository;
 
-	@RequestMapping(value = "ocr/v0.9/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
-	public Status doOcrFile(@RequestBody final Image image) throws Exception {
-		File tmpFile = File.createTempFile("ocr_image", image.getExtension());
-		try {
-			FileUtils.writeByteArrayToFile(tmpFile, Base64.decode(image.getImage()));
-			Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
-			String imageText = tesseract.doOCR(tmpFile);
-			LOGGER.info("OCR Image Text = " + imageText);
-		}
-		catch (Exception e) {
-			LOGGER.error("Exception while converting/uploading image: ", e);
-			throw new TesseractException();
-		}
-		finally {
-			tmpFile.delete();
-		}
-		return new Status("success");
-	}
+    @RequestMapping(value = "ocr/ping", method = RequestMethod.GET)
+    public Status ping() throws Exception {
+        return new Status("OK");
+    }
 
-	@RequestMapping(value = "ocr/v1/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
-	public Status doOcr(@RequestBody Image image) throws TesseractException {
-		try {
-			ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decode(image.getImage()));
-			Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
-			String imageText = tesseract.doOCR(ImageIO.read(bis));
-			image.setText(imageText);
-			ApplicationContext context = new AnnotationConfigApplicationContext(MongoConfiguration.class);
-			MongoOperations mongoOperations = (MongoOperations) context.getBean("mongoTemplate");
-			mongoOperations.save(image);
-			((AbstractApplicationContext) context).close();
-			LOGGER.debug("OCR Result = " + imageText);
-		}
-		catch (Exception e) {
-			LOGGER.error("TessearctException while converting/uploading image: ", e);
-			throw new TesseractException();
-		}
-		return new Status("success");
-	}
+    @RequestMapping(value = "ocr/v0.9/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Status doOcrFile(@RequestBody final Image image) throws Exception {
+        File tmpFile = File.createTempFile("ocr_image", image.getExtension());
+        try {
+            FileUtils.writeByteArrayToFile(tmpFile, Base64.decodeBase64(image.getImage()));
+            Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
+            String imageText = tesseract.doOCR(tmpFile);
+            LOGGER.info("OCR Image Text = " + imageText);
+        } catch (Exception e) {
+            LOGGER.error("Exception while converting/uploading image: ", e);
+            throw new TesseractException();
+        } finally {
+            tmpFile.delete();
+        }
+        return new Status("success");
+    }
 
-	@RequestMapping(value = "ocr/v1/image/{user}/{searchText}", method = RequestMethod.GET)
-	public Image getUserImage(@PathVariable String user, @PathVariable String searchText) throws Exception {
-		Image userImage = null;
-		try {
-			ApplicationContext context = new AnnotationConfigApplicationContext(MongoConfiguration.class);
-			Query query = new Query();
-			query.addCriteria(Criteria.where("userId").is(user).and("text").regex(searchText, "i"));
-			MongoOperations mongoOperations = (MongoOperations) context.getBean("mongoTemplate");
-			userImage = mongoOperations.findOne(query, Image.class);
-			((AbstractApplicationContext) context).close();
-		}
-		catch (Exception e) {
-			LOGGER.error("Exception occured finding image for user: {} with searchText: {} ", user, searchText, e);
-			throw new Exception();
-		}
-		return userImage;
-	}
+    @RequestMapping(value = "ocr/v1/upload", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Status doOcr(@RequestBody Image image) throws Exception {
+        try {
+            //FileUtils.writeByteArrayToFile(tmpFile, Base64.decodeBase64(image.getImage()));
+            ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decodeBase64(image.getImage()));
+            Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
+            String imageText = tesseract.doOCR(ImageIO.read(bis));
+            image.setText(imageText);
+            repository.save(image);
+            LOGGER.debug("OCR Result = " + imageText);
+        } catch (Exception e) {
+            LOGGER.error("TessearctException while converting/uploading image: ", e);
+            throw new TesseractException();
+        }
 
-	public static void main(String[] args) {
-		SpringApplication.run(Tess4jV1.class, args);
-	}
+        return new Status("success");
+    }
+
+    @RequestMapping(value = "ocr/v1/images/users/{userId}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Image> getUserImages(@PathVariable String userId) throws Exception {
+        List<Image> userImages = new ArrayList<>();
+        try {
+            userImages = repository.findByUserId(userId);
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred finding image for userId: {} ", userId, e);
+            throw new Exception();
+        }
+        return userImages;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Tess4jV1.class, args);
+    }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.tess4j.model;
+package com.tess4j.rest.model;
 
 public class Status {
 	/**

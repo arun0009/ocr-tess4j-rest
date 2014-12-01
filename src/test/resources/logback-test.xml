@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-	<appender name="STDOUT"
-			class="ch.qos.logback.core.ConsoleAppender">
-		<layout class="ch.qos.logback.classic.PatternLayout">
-			<pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
-		</layout>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+		</encoder>
 	</appender>
  
      <!--Daily rolling file appender -->
@@ -13,19 +12,18 @@
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<FileNamePattern>tess4j.%d{yyyy-MM-dd}.log</FileNamePattern>
 		</rollingPolicy>
- 
-		<layout class="ch.qos.logback.classic.PatternLayout">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</Pattern>
-		</layout>
+		</encoder>
 	</appender>
  
  
 	<logger name="com.tess4j">
-		<level value="debug" />
+		<level value="DEBUG" />
 	</logger>
  
 	<root>
-		<level value="info" />
+		<level value="INFO" />
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
