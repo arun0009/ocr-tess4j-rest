@@ -5,3 +5,7 @@
 target/
 bin/
 .gradle/
+*.iml 
+*.ipr 
+*.iws
+out/
