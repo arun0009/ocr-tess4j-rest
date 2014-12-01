@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Build-User: CXI624
-Build-Time: 2014-December-01 10:27:24
-Build-OS: Mac OS X - version 10.10.1
-Build-Sys: x86_64
-Java-Version: 1.7.0_72
-
