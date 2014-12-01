@@ -9,13 +9,11 @@ and multi-page images. The library has been developed and tested on Windows and 
 
 Installing Tesseract <br/>
 https://code.google.com/p/tesseract-ocr/ <br/>
-https://code.google.com/p/tesseract-ocr/wiki/ReadMe
 
 Install ghostscript (for PDF to Text) * If you are going to do PDF to text as well*<br/>
 http://www.ghostscript.com/download/gsdnld.html
 
-On Mac the easiest way is to use homebrew:
------------------------------------------
+**On Mac the easiest way is to use homebrew:
 
 brew install tesseract<br/>
 brew install gs
