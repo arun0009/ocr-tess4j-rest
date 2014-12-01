@@ -29,7 +29,7 @@ ocr-tess4j-rest uses:
 * Rest Assured is used for testing rest (Tess4jV1). Just remove @Ignore on the Tess4jV1SmokeTest and run the rest test.
 * Uses mongo db to store image.
 * Logback for logging.
-* Graddle for build.(or)
+* Graddle for build (or)
 * Maven for build.
 
 
