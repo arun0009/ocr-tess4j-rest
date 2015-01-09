@@ -52,7 +52,7 @@ public class Tess4jV1SmokeTest {
         image.setExtension(".png");
         image.setImage(Base64.encodeBase64(IOUtils.toByteArray(inputStream)));
         String response = given().contentType("application/json").headers(headers).when().body(image).expect()
-            .statusCode(200).post("http://localhost:8080/ocr/v1/upload").asString();
+            .statusCode(200).post("http://localhost:8080/ocr/v0.9/upload").asString();
         System.out.println(response);
     }
 
