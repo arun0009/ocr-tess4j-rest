@@ -27,9 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,10 +37,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-@EnableAutoConfiguration
-@Configuration
+@SpringBootApplication
 @RestController
-@ComponentScan("com.tess4j.*")
 public class Tess4jV1 {
 
     private Logger LOGGER = LoggerFactory.getLogger(Tess4jV1.class);
@@ -62,7 +58,7 @@ public class Tess4jV1 {
             FileUtils.writeByteArrayToFile(tmpFile, Base64.decodeBase64(image.getImage()));
             Tesseract tesseract = Tesseract.getInstance(); // JNA Interface Mapping
             String imageText = tesseract.doOCR(tmpFile);
-            LOGGER.info("OCR Image Text = " + imageText);
+            LOGGER.debug("OCR Image Text = " + imageText);
         } catch (Exception e) {
             LOGGER.error("Exception while converting/uploading image: ", e);
             throw new TesseractException();

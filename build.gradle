@@ -1,81 +1,63 @@
 group = 'com.tess4j'
 version = '1.1'
-buildDir = 'target'
 
 buildscript {
-	repositories {
-		maven { url "http://repo.ghost4j.org/maven2/releases" }
-		maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
-		mavenCentral()
-	}
+    repositories {
+        maven { url "http://repo.ghost4j.org/maven2/releases" }
+        maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.6.RELEASE")
+    }
 }
 
 repositories {
-	maven { url "http://repo.ghost4j.org/maven2/releases" }
-	maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
-	mavenCentral()
+    maven { url "http://repo.ghost4j.org/maven2/releases" }
+    maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
+    mavenCentral()
 }
-
 
 // apply plugins
 apply plugin: 'java'
-apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
-apply plugin: 'eclipse-wtp'
+apply plugin: 'spring-boot'
 
-// eclipse wtp context
-eclipse{
-	wtp {
-		component {
-			contextPath = 'tess4j'
-		}
-	}
-}
-
-// war manifest information
-ext.sharedManifest = manifest {
-	attributes(
-			'Build-User' : System.properties['user.name'],
-			'Build-Time' : new Date().format('yyyy-MMMM-dd HH:mm:ss'),
-			'Build-OS' : System.properties['os.name'] + ' - version ' + System.properties['os.version'],
-			'Build-Sys' : System.properties['os.arch'],
-			'Java-Version' : System.properties['java.version'])
-}
-
-
-// Build WAR file
-war {
-	archiveName = "tess4j.war"
-	manifest = sharedManifest
-	destinationDir = file("$buildDir")
-}
 
 // versions of dependencies
-def logbackVersion = '1.1.2'
+def logbackVersion = '1.1.3'
 
 dependencies {
+    compile "net.sourceforge.tess4j:tess4j:2.0.1"
 
-	// Servlet Api
-	providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    // spring boot
+    compile "org.springframework.boot:spring-boot-starter-web:1.2.6.RELEASE"
 
-	compile "net.sourceforge.tess4j:tess4j:1.3.0"
+    //spring data mongodb
+    compile "org.springframework.boot:spring-boot-starter-data-mongodb:1.2.6.RELEASE"
 
-	// spring boot
-	compile "org.springframework.boot:spring-boot-starter-web:1.1.9.RELEASE"
+    //rest-assured
+    testCompile "com.jayway.restassured:rest-assured:2.5.0"
 
-	//spring data mongodb
-	compile "org.springframework.boot:spring-boot-starter-data-mongodb:1.1.9.RELEASE"
+    //Commons Codec for Base 64
+    compile "commons-codec:commons-codec:1.10"
 
-	//rest-assured
-	testCompile "com.jayway.restassured:rest-assured:2.4.0"
+    //Commons IO
+    compile "commons-io:commons-io:2.4"
 
-	//Commons Codec for Base 64
-	compile "commons-codec:commons-codec:1.10"
-
-	//Commons IO
-	compile "commons-io:commons-io:2.4"
-
-	//junit
-	testCompile "junit:junit:4.11"
+    //junit
+    testCompile "junit:junit:4.12"
 }
+
+springBoot {
+    mainClass = "com.tess4j.rest.Tess4jV1"
+}
+
+
+// Build JAR file
+jar {
+    baseName = 'tess4j'
+    version = ''
+}
+

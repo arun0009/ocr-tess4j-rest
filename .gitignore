@@ -3,6 +3,7 @@
 .log
 .settings/
 target/
+build/
 bin/
 .gradle/
 *.iml 
