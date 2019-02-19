@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ImageRepository extends MongoRepository<Image, String> {
 
-    public List<Image> findByUserId(String userId);
+     List<Image> findByUserId(String userId);
 
 
 }

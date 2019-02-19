@@ -1,63 +1,60 @@
-group = 'com.tess4j'
-version = '1.1'
-
-buildscript {
-    repositories {
-        maven { url "http://repo.ghost4j.org/maven2/releases" }
-        maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.6.RELEASE")
-    }
+plugins {
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+    id 'java'
+    id 'idea'
 }
 
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.tess4j'
+version = '1.2'
+sourceCompatibility = '1.8'
+
+
+
 repositories {
-    maven { url "http://repo.ghost4j.org/maven2/releases" }
-    maven { url "http://repository.mygrid.org.uk/artifactory/mygrid-all/" }
     mavenCentral()
 }
 
-// apply plugins
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
-
-
-// versions of dependencies
-def logbackVersion = '1.1.3'
-
 dependencies {
-    compile "net.sourceforge.tess4j:tess4j:2.0.1"
-
     // spring boot
-    compile "org.springframework.boot:spring-boot-starter-web:1.2.6.RELEASE"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
     //spring data mongodb
-    compile "org.springframework.boot:spring-boot-starter-data-mongodb:1.2.6.RELEASE"
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-    //rest-assured
-    testCompile "com.jayway.restassured:rest-assured:2.5.0"
+    compile group: 'net.sourceforge.tess4j', name: 'tess4j', version: '4.3.1'
 
     //Commons Codec for Base 64
-    compile "commons-codec:commons-codec:1.10"
+    compile "commons-codec:commons-codec:1.12"
 
     //Commons IO
-    compile "commons-io:commons-io:2.4"
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
     //junit
     testCompile "junit:junit:4.12"
+
+    //rest-assured
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
+
 }
 
-springBoot {
-    mainClass = "com.tess4j.rest.Tess4jV1"
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
 }
 
+archivesBaseName = 'ocr-tess4j-rest'
 
-// Build JAR file
 jar {
-    baseName = 'tess4j'
-    version = ''
+    manifest {
+        attributes 'Main-Class': 'com.tess4j.rest.Tess4jV1'
+    }
 }
 
