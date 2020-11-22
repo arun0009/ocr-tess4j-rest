@@ -14,7 +14,6 @@ Running ocr-tess4j-rest
 
 `docker-compose up`
 
-
 ocr-tess4j-rest uses:
 ------------------
 
@@ -27,3 +26,13 @@ ocr-tess4j-rest uses:
 * Gradle for build
 
 ** Note: Previous version of ocr-tess4j-rest is at tag 1.1
+
+
+v1.3 notes:
+-----------
+
+Added a new endpoint for ease, you can now convert image to text by doing a GET in browser and passing image url to get text as response.
+
+e.g. 
+
+http://localhost:8080/ocr/v1/convert?url=https://raw.githubusercontent.com/arun0009/ocr-tess4j-rest/master/testocr.png&extension=png

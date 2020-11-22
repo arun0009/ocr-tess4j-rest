@@ -4,7 +4,6 @@ services:
 
   mongo:
     image: mongo
-    restart: always
     ports:
       - "27017:27017"
 
@@ -18,3 +17,5 @@ services:
       - TESSDATA_PREFIX=/usr/share/tessdata
     depends_on:
       - mongo
+    links:
+      - mongo  

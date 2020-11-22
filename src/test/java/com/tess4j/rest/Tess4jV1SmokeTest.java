@@ -19,8 +19,8 @@ package com.tess4j.rest;
 import com.tess4j.rest.model.Image;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ import java.util.Map;
 import io.restassured.response.ResponseBody;
 import static io.restassured.RestAssured.given;
 
-@Ignore
+@Disabled
 public class Tess4jV1SmokeTest {
 
     @Test

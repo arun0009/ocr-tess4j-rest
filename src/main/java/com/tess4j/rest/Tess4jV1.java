@@ -37,7 +37,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.apache.commons.io.FileUtils;
+import java.net.URL;
+import java.net.URLConnection;
 
 @SpringBootApplication
 @RestController
@@ -59,6 +61,26 @@ public class Tess4jV1 {
         File tmpFile = File.createTempFile("ocr_image", image.getExtension());
         try {
             FileUtils.writeByteArrayToFile(tmpFile, Base64.decodeBase64(image.getImage()));
+            Tesseract tesseract = new Tesseract(); // JNA Interface Mapping
+            String imageText = tesseract.doOCR(tmpFile);
+            LOGGER.debug("OCR Image Text = " + imageText);
+            return new Text(imageText);
+        } catch (Exception e) {
+            LOGGER.error("Exception while converting/uploading image: ", e);
+            throw new TesseractException();
+        } finally {
+            tmpFile.delete();
+        }
+    }
+
+    @RequestMapping(value = "ocr/v1/convert", method = RequestMethod.GET)
+    public Text convertImageToText(@RequestParam String url,  @RequestParam(defaultValue = "png") String extension) throws Exception {
+        File tmpFile = File.createTempFile("ocr_image", "." + extension);
+        try {
+            URLConnection conn = new URL(url).openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:31.0) Gecko/20100101 Firefox/31.0");
+            conn.connect();
+            FileUtils.copyInputStreamToFile(conn.getInputStream(), tmpFile);
             Tesseract tesseract = new Tesseract(); // JNA Interface Mapping
             String imageText = tesseract.doOCR(tmpFile);
             LOGGER.debug("OCR Image Text = " + imageText);
