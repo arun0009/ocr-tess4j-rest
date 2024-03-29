@@ -2,9 +2,13 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
     id 'java'
     id 'idea'
+    id "com.diffplug.spotless" version "6.25.0"
 }
 
 apply plugin: 'io.spring.dependency-management'
+
+apply plugin: 'com.diffplug.spotless'
+
 
 group = 'com.tess4j'
 version = '1.4'
@@ -36,6 +40,8 @@ dependencies {
     //rest-assured
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.4.0'
 
+    //spotless
+    implementation group: 'com.diffplug.spotless', name: 'spotless-plugin-gradle', version: '6.25.0'
 }
 
 sourceSets {
@@ -47,6 +53,17 @@ sourceSets {
             srcDirs = ['src/main/resources']
         }
     }
+}
+
+spotless {
+  java {
+    importOrder()
+    removeUnusedImports()
+    cleanthat() 
+    googleJavaFormat() 
+    formatAnnotations()
+    licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+  }
 }
 
 archivesBaseName = 'ocr-tess4j-rest'

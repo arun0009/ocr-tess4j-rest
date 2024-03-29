@@ -2,7 +2,6 @@
 .idea
 .project
 .log
-.settings/
 target/
 build/
 bin/

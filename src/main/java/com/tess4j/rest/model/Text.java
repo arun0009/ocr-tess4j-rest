@@ -1,18 +1,19 @@
+/* (C) 2024 */
 package com.tess4j.rest.model;
 
 public class Text {
 
-    private String text;
+  private String text;
 
-    public Text(String text) {
-        this.text = text;
-    }
+  public Text(String text) {
+    this.text = text;
+  }
 
-    public String getText() {
-        return text;
-    }
+  public String getText() {
+    return text;
+  }
 
-    public void setText(String text) {
-        this.text = text;
-    }
+  public void setText(String text) {
+    this.text = text;
+  }
 }
