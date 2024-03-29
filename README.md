@@ -10,6 +10,7 @@ and multi-page images. The library has been developed and tested on Windows and 
 Running ocr-tess4j-rest
 -----------------------
 `docker-compose build`
+
 `docker-compose up`
 
 ocr-tess4j-rest uses:
