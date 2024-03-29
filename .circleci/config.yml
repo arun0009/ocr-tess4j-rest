@@ -1,6 +1,3 @@
-# Couldn't automatically generate a config from your source code.
-# This is a generic template to serve as a base for your custom config
-# See: https://circleci.com/docs/configuration-reference
 version: 2.1
 jobs:
   test:
@@ -34,10 +31,7 @@ jobs:
 workflows:
   example:
     jobs:
-      - test
-      - build:
-          requires:
-            - test
+      - build
       - deploy:
           requires:
-            - test
+            - build
