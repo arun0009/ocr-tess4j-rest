@@ -20,7 +20,7 @@ ocr-tess4j-rest uses:
 * Spring Boot Data for connecting with mongo db.
 * Image + Text (from OCR) is stored in mongo db for `ocr/v1/upload` endpoint.
 * Text of uploaded image is displayed back in response if you use `ocr/v1/convert` (Testing or if you want to use something else than mongo).
-* Rest Assured is used for testing rest (Tess4jV1). Just remove @Ignore on the Tess4jV1SmokeTest and run the rest test after running `docker-compose up`.
+* Rest Assured is used for testing rest (Tess4jV1). Just remove @Disabled on the Tess4jV1SmokeTest and run the rest test after running `docker-compose up`.
 * Logback for logging.
 * Gradle for build
 
