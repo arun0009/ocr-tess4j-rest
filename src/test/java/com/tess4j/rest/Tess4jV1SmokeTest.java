@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-@Disabled
 public class Tess4jV1SmokeTest {
 
   @Test
@@ -61,7 +60,7 @@ public class Tess4jV1SmokeTest {
     InputStream inputStream = ClassLoader.getSystemResourceAsStream("eurotext.png");
     image.setUserId("arun0009");
     image.setExtension(".png");
-    image.setImage(Base64.encodeBase64(IOUtils.toByteArray(inputStream)));
+    image.setImage(IOUtils.toByteArray(inputStream));
     String response =
         given()
             .contentType("application/json")

@@ -40,3 +40,11 @@ Updated boot to 3, tess4j & tessract to 5.x, java 21
 e.g. 
 
 http://localhost:8080/ocr/v1/convert?url=https://raw.githubusercontent.com/arun0009/ocr-tess4j-rest/master/testocr.png&extension=png
+
+v1.5 notes:
+-----------
+Upgrading dependencies, gradle wrapper added
+
+v1.6 notes:
+-----------
+Updated tess4j to 5.7.0, tesseract to 5.3.1, java 24 & using Ubuntu 24.04 as base image
