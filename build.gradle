@@ -11,7 +11,7 @@ apply plugin: 'com.diffplug.spotless'
 
 
 group = 'com.tess4j'
-version = '1.4'
+version = '1.6'
 
 repositories {
     mavenCentral()
@@ -24,13 +24,13 @@ dependencies {
     //spring data mongodb
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-    implementation group: 'net.sourceforge.tess4j', name: 'tess4j', version: '5.13.0'
+    implementation group: 'net.sourceforge.tess4j', name: 'tess4j', version: '5.15.0'
 
     //Commons Codec for Base 64
-    implementation group: 'commons-codec', name: 'commons-codec', version: '1.17.1'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.18.0'
 
     //Commons IO
-    implementation group: 'commons-io', name: 'commons-io', version: '2.18.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
 
     //junit
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.4'
@@ -39,10 +39,10 @@ dependencies {
 
 
     //rest-assured
-    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.0'
+    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.5'
 
     //spotless
-    implementation group: 'com.diffplug.spotless', name: 'spotless-plugin-gradle', version: '6.25.0'
+    implementation group: 'com.diffplug.spotless', name: 'spotless-plugin-gradle', version: '7.0.4'
 }
 
 sourceSets {
@@ -71,9 +71,8 @@ spotless {
   }
 }
 
-archivesBaseName = 'ocr-tess4j-rest'
-
 jar {
+    archiveBaseName.set('ocr-tess4j-rest')
     manifest {
         attributes 'Main-Class': 'com.tess4j.rest.Tess4jV1'
     }

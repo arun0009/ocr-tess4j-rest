@@ -72,7 +72,7 @@ public class Tess4jV1 {
       FileUtils.copyInputStreamToFile(conn.getInputStream(), tmpFile);
       Tesseract tesseract = new Tesseract(); // JNA Interface Mapping
       String imageText = tesseract.doOCR(tmpFile);
-      LOGGER.debug("OCR Image Text = " + imageText);
+      LOGGER.debug("OCR Image Text = {}", imageText);
       return new Text(imageText);
     } catch (Exception e) {
       LOGGER.error("Exception while converting/uploading image: ", e);
@@ -89,19 +89,26 @@ public class Tess4jV1 {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Status doOcr(@RequestBody Image image) throws Exception {
     try {
-      // FileUtils.writeByteArrayToFile(tmpFile, Base64.decodeBase64(image.getImage()));
-      ByteArrayInputStream bis = new ByteArrayInputStream(Base64.decodeBase64(image.getImage()));
-      Tesseract tesseract = new Tesseract(); // JNA Interface Mapping
-      String imageText = tesseract.doOCR(ImageIO.read(bis));
+      byte[] imageBytes = image.getImage();
+      ByteArrayInputStream bis = new ByteArrayInputStream(imageBytes);
+      java.awt.image.BufferedImage bufferedImage = ImageIO.read(bis);
+
+      if (bufferedImage == null) {
+        LOGGER.error(
+            "ImageIO.read returned null — possibly an invalid or unsupported image format.");
+        throw new IllegalArgumentException("Could not decode image from base64.");
+      }
+
+      Tesseract tesseract = new Tesseract();
+      String imageText = tesseract.doOCR(bufferedImage);
       image.setText(imageText);
       repository.save(image);
-      LOGGER.debug("OCR Result = " + imageText);
+      LOGGER.debug("OCR Result = {}", imageText);
+      return new Status("success");
     } catch (Exception e) {
-      LOGGER.error("TessearctException while converting/uploading image: ", e);
-      throw new TesseractException();
+      LOGGER.error("TesseractException while converting/uploading image: ", e);
+      throw new TesseractException("OCR failed", e);
     }
-
-    return new Status("success");
   }
 
   @RequestMapping(
