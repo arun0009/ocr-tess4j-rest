@@ -1,80 +1,50 @@
 plugins {
-    id 'org.springframework.boot' version '3.4.1'
     id 'java'
-    id 'idea'
-    id "com.diffplug.spotless" version "6.25.0"
+    id 'org.springframework.boot' version '4.0.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '7.0.4'
 }
 
-apply plugin: 'io.spring.dependency-management'
-
-apply plugin: 'com.diffplug.spotless'
-
-
 group = 'com.tess4j'
-version = '1.6'
+version = '2.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    // spring boot
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    //spring data mongodb
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.3'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-    implementation group: 'net.sourceforge.tess4j', name: 'tess4j', version: '5.15.0'
+    implementation 'net.sourceforge.tess4j:tess4j:5.18.0'
 
-    //Commons Codec for Base 64
-    implementation group: 'commons-codec', name: 'commons-codec', version: '1.18.0'
-
-    //Commons IO
-    implementation group: 'commons-io', name: 'commons-io', version: '2.19.0'
-
-    //junit
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.4'
-
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.4'
-
-
-    //rest-assured
-    testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '5.5.5'
-
-    //spotless
-    implementation group: 'com.diffplug.spotless', name: 'spotless-plugin-gradle', version: '7.0.4'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java']
-        }
-        resources {
-            srcDirs = ['src/main/resources']
-        }
-    }
-}
-
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
 
 spotless {
-  java {
-    importOrder()
-    removeUnusedImports()
-    cleanthat() 
-    googleJavaFormat() 
-    formatAnnotations()
-    licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
-  }
-}
-
-jar {
-    archiveBaseName.set('ocr-tess4j-rest')
-    manifest {
-        attributes 'Main-Class': 'com.tess4j.rest.Tess4jV1'
+    java {
+        importOrder()
+        removeUnusedImports()
+        googleJavaFormat()
+        formatAnnotations()
+        licenseHeader '/* (C) $YEAR */'
     }
 }
 
+tasks.named('bootJar') {
+    archiveBaseName.set('ocr-tess4j-rest')
+}

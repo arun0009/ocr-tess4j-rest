@@ -1,0 +1,6 @@
+# Use in production: SPRING_PROFILES_ACTIVE=prod
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
