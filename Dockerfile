@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # Leptonica 1.86 + Tesseract 5.5.2 from source (Tess4J 5.18). Runtime: Ubuntu 24.04 + OpenJDK 21.
 
-FROM ubuntu:24.04 AS native-build
+FROM ubuntu:26.04 AS native-build
 ARG DEBIAN_FRONTEND=noninteractive
 ARG LEPTONICA_VERSION=1.86.0
 ARG TESSERACT_VERSION=5.5.2
@@ -34,7 +34,7 @@ RUN wget -q "https://github.com/tesseract-ocr/tesseract/archive/refs/tags/${TESS
     && ldconfig \
     && cd .. && rm -rf tesseract*
 
-FROM ubuntu:24.04 AS build
+FROM ubuntu:26.04 AS build
 RUN apt-get update \
     && apt-get install -y --no-install-recommends openjdk-21-jdk-headless ca-certificates \
     && rm -rf /var/lib/apt/lists/*
@@ -44,7 +44,7 @@ COPY gradle ./gradle
 COPY src ./src
 RUN chmod +x gradlew && ./gradlew bootJar -x test --no-daemon
 
-FROM ubuntu:24.04
+FROM ubuntu:26.04
 ENV LANG=C.UTF-8
 ENV JNA_LIBRARY_PATH=/usr/local/lib
 ENV TESSDATA_PREFIX=/usr/local/share/tessdata
