@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-    implementation 'net.sourceforge.tess4j:tess4j:5.19.0'
+    implementation 'net.sourceforge.tess4j:tess4j:5.20.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
