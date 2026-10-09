@@ -25,7 +25,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
-    implementation 'net.sourceforge.tess4j:tess4j:5.20.0'
+    // 5.17 pairs with lept4j 1.22 / Leptonica 1.86, which Ubuntu 26.04 ships.
+    // 5.18+ requires Leptonica 1.87 and breaks the distro libtesseract package.
+    implementation 'net.sourceforge.tess4j:tess4j:5.17.0'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

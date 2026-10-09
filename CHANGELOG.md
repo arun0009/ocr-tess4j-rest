@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Docker image uses Ubuntu 26.04 `tesseract-ocr` and Leptonica 1.86 instead of building them from source
+- Tess4J pinned at 5.17 so it matches that Leptonica (5.18+ needs 1.87)
 - GHCR images published for `linux/amd64` and `linux/arm64`
 - `SPRING_PROFILES_ACTIVE=prod` disables Swagger UI / OpenAPI docs
 

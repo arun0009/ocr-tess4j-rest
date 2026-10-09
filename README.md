@@ -11,7 +11,7 @@
 	<a href="LICENSE"><img alt="License" src="https://img.shields.io/github/license/arun0009/ocr-tess4j-rest"/></a>
 	<img alt="Java 21" src="https://img.shields.io/badge/Java-21-blue?logo=openjdk&logoColor=white"/>
 	<img alt="Spring Boot 4" src="https://img.shields.io/badge/Spring%20Boot-4-6DB33F?logo=springboot&logoColor=white"/>
-	<img alt="Tess4J" src="https://img.shields.io/badge/Tess4J-5.18-4CAF50"/>
+	<img alt="Tess4J" src="https://img.shields.io/badge/Tess4J-5.17-4CAF50"/>
 </p>
 
 <p align="center">
@@ -28,7 +28,7 @@
 
 ## What is this?
 
-A small **Spring Boot 4** service that wraps [Tesseract 5.5](https://github.com/tesseract-ocr/tesseract) via [Tess4J 5.18](https://github.com/nguyenq/tess4j). Run the container, POST a file or pass an image URL, get `{ "text": "..." }` back.
+A small **Spring Boot 4** service that wraps Ubuntu’s [Tesseract 5.5](https://github.com/tesseract-ocr/tesseract) package via [Tess4J 5.17](https://github.com/nguyenq/tess4j). Run the container, POST a file or pass an image URL, get `{ "text": "..." }` back.
 
 **OCR is stateless by default.** Persistence is a plug-in — we ship a Mongo reference implementation; you can swap in Postgres, S3 + metadata, or anything else by implementing one interface.
 
@@ -151,8 +151,8 @@ URL OCR requires an allowlist, blocks private/reserved IPs, and does not follow 
 |-----------|---------|
 | Java | 21 (LTS) |
 | Spring Boot | 4.0.x |
-| Tess4J / Tesseract | 5.18 / 5.5 |
-| Docker | Ubuntu 24.04, OpenJDK 21, `tessdata_best` (eng) |
+| Tess4J / Tesseract | 5.17 / 5.5.0 (Ubuntu `tesseract-ocr`) |
+| Docker | Ubuntu 26.04, OpenJDK 21, English traineddata from the distro |
 
 ## Makefile
 
